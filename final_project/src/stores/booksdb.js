@@ -11,8 +11,4 @@ const books = {
       10: {"author": "Samuel Beckett","title": "Molloy, Malone Dies, The Unnamable, the trilogy", "reviews": {} }
 };
 
-const users={  
-};
-
-
-module.exports={books, users};
+module.exports=books;
