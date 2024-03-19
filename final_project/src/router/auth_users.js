@@ -5,10 +5,14 @@ const jwt = require("jsonwebtoken");
 
 const regd_users = express.Router();
 const { authenticatedUser } = require("../services/userService");
+const { upsertReview } = require("../services/bookService");
 
 //only registered users can login
 regd_users.post("/login", (req, res) => {
-  const user = authenticatedUser(req.body.username, req.body.password);
+  const username = req.body.username;
+  const password = req.body.password;
+
+  const user = authenticatedUser(username, password);
 
   if (!user) {
     return res
@@ -26,6 +30,7 @@ regd_users.post("/login", (req, res) => {
 
   req.session.authorization = {
     accessToken,
+    username,
   };
   return res.status(HttpStatus.SUCCESS).send("User successfully logged in");
 });
@@ -33,7 +38,7 @@ regd_users.post("/login", (req, res) => {
 // Add a book review
 regd_users.put("/auth/review/:isbn", (req, res) => {
   //Write your code here
-  return res.status(300).json({ message: "Yet to be implemented" });
+  upsertReview(req, res, req.session.authorization.username);
 });
 
 module.exports.authenticated = regd_users;

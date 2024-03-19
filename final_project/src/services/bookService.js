@@ -28,10 +28,24 @@ const getReview = (req, res) => {
   res.json(reviews);
 };
 
+const upsertReview = (req, res, username) => {
+  const isbn = req.params.isbn;
+  const review = req.query.review;
+  const book = bookStore[isbn];
+
+  if (book) {
+    book.reviews[username] = { review };
+    res.json(
+      `The review for the book with ISBN ${isbn} has been added/updated.`
+    );
+  } else res.json("Book Not Found!");
+};
+
 module.exports = {
   getBookList,
   getBooksByISBN,
   getBooksByAuthor,
   getBooksByTitle,
-  getReview
+  getReview,
+  upsertReview,
 };
