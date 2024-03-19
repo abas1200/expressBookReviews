@@ -1,16 +1,19 @@
 const userStore = require("../stores/usersdb.js");
 const HttpStatus = require("../constants/httpStatus");
 
-const isUserExist = (username) => {
-  return userStore.filter((u) => u.username == username).length > 0;
-};
+const isUserNameExist = (username) =>
+  userStore.filter((u) => u.username == username).length > 0;
+
+const authenticatedUser = (username, password) =>
+  userStore.filter((u) => u.username == username && u.password === password)
+    .length > 0;
 
 const registerUser = (req, res) => {
   const username = req.body.username;
   const password = req.body.password;
 
   if (username && password) {
-    if (!isUserExist(username)) {
+    if (!isUserNameExist(username)) {
       userStore.push({ username: username, password: password });
       return res.json({
         message: "User successfully registred. Now you can login",
