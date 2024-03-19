@@ -29,10 +29,18 @@ const getBooksByISBN = async (req, res) => {
     });
 };
 
-const getBooksByAuthor = (req, res) => {
-  const books = Object.values(bookStore).filter(
-    (b) => b.author == req.params.author
-  );
+// const getBooksByAuthor = (req, res) => {
+//   const books = Object.values(bookStore).filter(
+//     (b) => b.author == req.params.author
+//   );
+//   res.json(books);
+// };
+
+const BooksByAuthor = (author) =>
+  Object.values(bookStore).filter((b) => b.author == author);
+
+const getBooksByAuthor = async (req, res) => {
+  const books = await BooksByAuthor(req.params.author);
   res.json(books);
 };
 
