@@ -5,7 +5,7 @@ const jwt = require("jsonwebtoken");
 
 const regd_users = express.Router();
 const { authenticatedUser } = require("../services/userService");
-const { upsertReview } = require("../services/bookService");
+const { upsertReview, deleteReview } = require("../services/bookService");
 
 //only registered users can login
 regd_users.post("/login", (req, res) => {
@@ -36,9 +36,8 @@ regd_users.post("/login", (req, res) => {
 });
 
 // Add a book review
-regd_users.put("/auth/review/:isbn", (req, res) => {
-  //Write your code here
-  upsertReview(req, res, req.session.authorization.username);
-});
+regd_users.put("/auth/review/:isbn", upsertReview);
+
+regd_users.delete("/auth/review/:isbn", deleteReview);
 
 module.exports.authenticated = regd_users;

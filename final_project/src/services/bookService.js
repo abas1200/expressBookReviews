@@ -28,9 +28,11 @@ const getReview = (req, res) => {
   res.json(reviews);
 };
 
-const upsertReview = (req, res, username) => {
+const upsertReview = (req, res) => {
   const isbn = req.params.isbn;
   const review = req.query.review;
+  const username = req.session.authorization.username;
+
   const book = bookStore[isbn];
 
   if (book) {
@@ -41,6 +43,14 @@ const upsertReview = (req, res, username) => {
   } else res.json("Book Not Found!");
 };
 
+const deleteReview = (req, res) => {
+  const isbn = req.params.isbn;
+  const username = req.session.authorization.username;
+  delete bookStore[req.params.isbn]?.reviews[username];
+
+  res.json(`reviews for the ISBN ${isbn} posted by user ${username} deleted.`);
+};
+
 module.exports = {
   getBookList,
   getBooksByISBN,
@@ -48,4 +58,5 @@ module.exports = {
   getBooksByTitle,
   getReview,
   upsertReview,
+  deleteReview,
 };
