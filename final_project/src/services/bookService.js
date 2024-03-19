@@ -1,7 +1,13 @@
 const bookStore = require("../stores/booksdb.js");
 
-const getBookList = (req, res) => {
-  res.json(bookStore);
+// const getBookList = (req, res) => {
+//   res.json(bookStore);
+// };
+const getAllBookList = () => bookStore;
+
+const getBookList = async (req, res) => {
+  const result = await getAllBookList();
+  res.json(result);
 };
 
 const getBooksByISBN = (req, res) => {
