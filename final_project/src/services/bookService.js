@@ -44,10 +44,18 @@ const getBooksByAuthor = async (req, res) => {
   res.json(books);
 };
 
-const getBooksByTitle = (req, res) => {
-  const books = Object.values(bookStore).filter(
-    (b) => b.title == req.params.title
-  );
+// const getBooksByTitle = (req, res) => {
+//   const books = Object.values(bookStore).filter(
+//     (b) => b.title == req.params.title
+//   );
+//   res.json(books);
+// };
+
+const BooksByTitle = (title) =>
+  Object.values(bookStore).filter((b) => b.title == title);
+
+const getBooksByTitle = async (req, res) => {
+  const books = await BooksByTitle(req.params.title);
   res.json(books);
 };
 
