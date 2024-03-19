@@ -1,20 +1,14 @@
 const express = require("express");
 const HttpStatus = require("../constants/httpStatus");
-const APP_SETTING_TOKEN = require("../configs/appSetting");
+const { SETTING_TOKEN } = require("../configs/appSetting");
 const jwt = require("jsonwebtoken");
 
 const regd_users = express.Router();
+const { authenticatedUser } = require("../services/userService");
 
-let users = [];
-
-const isValid = (username) => {
-  //returns boolean
-  //write code to check is the username is valid
-};
- 
 //only registered users can login
 regd_users.post("/login", (req, res) => {
-  const user = req.body.user;
+  const user = authenticatedUser(req.body.username, req.body.password);
 
   if (!user) {
     return res
@@ -26,8 +20,8 @@ regd_users.post("/login", (req, res) => {
     {
       data: user,
     },
-    APP_SETTING_TOKEN.secret,
-    { expiresIn: APP_SETTING_TOKEN.expiresIn }
+    SETTING_TOKEN.secret,
+    { expiresIn: SETTING_TOKEN.expiresIn }
   );
 
   req.session.authorization = {
@@ -38,10 +32,8 @@ regd_users.post("/login", (req, res) => {
 
 // Add a book review
 regd_users.put("/auth/review/:isbn", (req, res) => {
-
   //Write your code here
   return res.status(300).json({ message: "Yet to be implemented" });
-
 });
 
 module.exports.authenticated = regd_users;

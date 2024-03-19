@@ -5,8 +5,8 @@ const isUserNameExist = (username) =>
   userStore.filter((u) => u.username == username).length > 0;
 
 const authenticatedUser = (username, password) =>
-  userStore.filter((u) => u.username == username && u.password === password)
-    .length > 0;
+  userStore.find((u) => u.username == username && u.password === password) ??
+  null;
 
 const registerUser = (req, res) => {
   const username = req.body.username;
@@ -31,4 +31,5 @@ const registerUser = (req, res) => {
 
 module.exports = {
   registerUser,
+  authenticatedUser,
 };
