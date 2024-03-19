@@ -10,9 +10,23 @@ const getBookList = async (req, res) => {
   res.json(result);
 };
 
-const getBooksByISBN = (req, res) => {
-  const book = bookStore[req.params.isbn] ?? "Book Not Found!";
-  res.json(book);
+// const getBooksByISBN = (req, res) => {
+//   const book = bookStore[req.params.isbn] ?? "Book Not Found!";
+//   res.json(book);
+// };
+
+const getBooksByISBN = async (req, res) => {
+  const request = new Promise((resolve, reject) => {
+    resolve(bookStore[req.params.isbn] ?? "Book Not Found!");
+  });
+
+  request
+    .then((response) => {
+      res.json(response);
+    })
+    .catch((err) => {
+      res.json(err.toString());
+    });
 };
 
 const getBooksByAuthor = (req, res) => {
